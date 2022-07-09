@@ -1,0 +1,173 @@
+**A sample of the data from DataCamp's SQL Tutorial that I extracted and wrote using MySQL as well as a series of answered queries**
+
+CREATE DATABASE datacamp;
+USE datacamp;
+
+CREATE TABLE films (
+    id INT NOT NULL AUTO_INCREMENT,
+    title VARCHAR(255),
+    release_year INT,
+    country VARCHAR(255),
+    duration INT,
+    language VARCHAR(255),
+    certification VARCHAR(255),
+    gross INT,
+    budget INT,
+    PRIMARY KEY (id)
+);
+
+INSERT INTO films (title, release_year, country, duration, language, certification, gross, budget)
+VALUES('Over the Hill to the Poorhouse', '1920', 'USA', '110', NULL, NULL, '3000000', '100000'),
+	  ('Top Hat', '1935', 'USA', '81', 'English', 'Approved', '3000000', '609000'),
+      ('Lolita', '1962', 'UK', '152', 'English', 'Not Rated', NULL, '2000000'),
+	    ('Show Boat', '1951', 'USA', '108', 'English', 'Approved', NULL, '2295429'),
+      ('Niagara', '1953', 'USA', '92', 'English', 'Approved', NULL, '1250000'),	  
+      ('Ordet', '1955', 'Denmark', '126', 'Danish', 'Not Rated', NULL , NULL),
+      ('Trapeze', '1956', 'USA', '105', 'English', 'Approved', NULL, '4000000'),	  
+      ('12 Angry Men', '1957', 'USA', '96', 'English', 'Not Rated', NULL, '350000'),
+      ('Solomon and Sheba', '1959', 'USA', '141', 'English', NULL, NULL, '5000000'), 
+      ('The Apartment', '1960', 'USA', '125', 'English', 'Approved', NULL, '3000000'),
+      ('Psycho', '1960', 'USA', '108', 'English', 'R', '32000000', '806947'),	  
+      ('The Hustler', '1961', 'USA', '134', 'English', 'Unrated', NULL, '2000000'),
+      ('Tom Jones', '1963', 'UK', '121', 'English', 'Unrated', NULL, '1000000');
+      
+UPDATE films 
+SET 
+    title = 'Bambi',
+    release_year = 1941,
+    duration = 70,
+    language = 'English',
+    certification = 'Approved',
+    gross = 102797150,
+    budget = NULL
+WHERE
+    id = 2;
+    
+INSERT INTO films (title, release_year, country, duration, language, certification, gross, budget)
+VALUES('Pinocchio', '1940', 'USA', '88', 'English', 'Approved', '84300000', '2600000');
+
+-- USING AN AGGREGATE FUNTION TO FIND THE SHORTEST DURATION FOR ALL FILMS
+SELECT 
+    MIN(duration)
+FROM
+    films;
+
+-- USING AN AGGREGATE FUNCTION TO FIND THE LONGEST DURATION FOR ALL FILMS
+SELECT 
+    MAX(duration)
+FROM
+    films;
+
+-- USING THE SUM FUNCTION TO GET THE TOTAL AMOUNT GROSSED BY ALL FILMS
+SELECT 
+    SUM(gross)
+FROM
+    films;
+
+-- GET THE AVERAGE AMOUNT GROSSED BY ALL FILMS
+SELECT 
+    AVG(gross)
+FROM
+    films;
+
+-- GET THE AMOUNT GROSSED BY THE WORST PERFORMING FILM 
+SELECT 
+    MIN(gross)
+FROM
+    films;
+
+-- GET THE AMOUNT GROSSED BY THE BEST PERFORMING FILM
+SELECT 
+    MAX(gross)
+FROM
+    films;
+
+-- USE THE SUM FUNCTION TO GET THE TOTAL AMOUNT GROSSED BY ALL FILMS MADE IN THE YEAR 2000 OR LATER
+SELECT 
+    SUM(gross)
+FROM
+    films
+WHERE
+    release_year >= 2000;
+
+-- GET THE AVERAGE AMOUNT GROSSED BY ALL FILMS WHOSE TITLES START WITH THE LETTER 'A'.
+SELECT 
+    AVG(gross)
+FROM
+    films
+WHERE
+    title LIKE 'A%';
+
+-- GET THE AMOUNT GROSSED BY THE WORST PERFORMING FILM IN 1994
+SELECT 
+    MIN(gross)
+FROM
+    films
+WHERE
+    release_year = 1994;
+
+-- GET THE AMOUNT GROSSED BY THE BEST PERFORMING FILM BETWEEN 2000 AND 2012, INCLUSIVE.
+SELECT 
+    MAX(gross)
+FROM
+    films
+WHERE
+    release_year BETWEEN 2000 AND 2012;
+    
+-- GET THE TITLE AND NET PROFIT (THE AMOUNT A FILM GROSSED, MINUS ITS BUDGET) FOR ALL FILMS. ALIAS THE NET PROFIT AS "NET_PROFIT"
+SELECT 
+    TITLE, (GROSS - BUDGET) AS NET_PROFIT
+FROM
+    films;
+
+-- GET THE TITLE AND DURATION IN HOURS FOR ALL FILMS
+SELECT 
+    TITLE, (DURATION / 60.0) AS duration_hours
+FROM
+    films;
+ 
+ -- GET THE AVERAGE DURATION IN HOURS FOR ALL FILMS, ALIASED AS "AVG_DURATION_HOURS"
+SELECT 
+    AVG(duration / 60.0) AS avg_duration_hours
+FROM
+    films;
+    
+-- GET THE NUMBER OF YEARS BETWEEN THE NEWEST FILM AND OLDEST FILM. ALIAS THE RESULT AS DIFFERENCE
+SELECT 
+    MAX(release_year) - MIN(release_year) AS difference
+FROM
+    films;
+    
+-- GET THE NUMBER OF DECADES THE FILMS TABLE COVERS. ALIAS THE RESULTS AS 'NUMBER OF DECADES'.
+SELECT 
+    (MAX(RELEASE_YEAR) - MIN(RELEASE_YEAR)) / 10.0 AS NUMBER_OF_DECADES
+FROM
+    FILMS;
+    
+-- GET THE TITLE OF FILMS RELEASED IN 2000 OR 2012, IN THE ORDER THEY WERE RELEASED
+SELECT 
+    TITLE
+FROM
+    FILMS
+WHERE
+    RELEASE_YEAR = 2000
+        OR RELEASE_YEAR = 2012
+ORDER BY RELEASE_YEAR;
+
+-- GET ALL DETAILS FOR ALL FILMS EXCEPT THOSE RELEASED IN 2015 AND ORDER THEM BY DURATION
+SELECT 
+    *
+FROM
+    FILMS
+WHERE
+    RELEASE_YEAR <> 2015
+ORDER BY DURATION;
+
+-- GET THE TITLE AND GROSS EARNINGS FOR MOVIES WHICH BEGIN WITH THE LETTER 'M' AND ORDER THE RESULTS ALPHABETICALLY.
+SELECT 
+    TITLE, GROSS
+FROM
+    FILMS
+WHERE
+    TITLE LIKE 'M%'
+ORDER BY TITLE;
